@@ -30,5 +30,5 @@ archive.zip
 .DS_Store
 
 # environments
-.pem
-.env
+*.pem
+*.env
