@@ -11,6 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: create remote directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_EC2_HOST }}
+          username: ${{ secrets.DEV_EC2_USER }}
+          key: ${{ secrets.DEV_EC2_KEY }}
+          script: mkdir -p /home/ubuntu/srv/project/
+
       - name: copy source via ssh key
         uses: burnett01/rsync-deployments@4.1
         with:
