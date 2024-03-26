@@ -8,7 +8,7 @@ then
   # Add Docker's official GPG key:
   sudo apt-get update
   sudo apt-get -y install ca-certificates curl
-  sudo install -y -m 0755 -d /etc/apt/keyrings
+  sudo install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
 
@@ -22,10 +22,10 @@ then
 fi
 
 # Installing docker-compose if not exists
-if ! type docker-compose > /dev/null
+if ! type docker compose > /dev/null
 then
-  echo "docker-compose does not exist"
-  echo "Start installing docker-compose"
+  echo "docker compose does not exist"
+  echo "Start installing docker compose"
   sudo DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
   sudo mkdir -p $DOCKER_CONFIG/cli-plugins
   sudo curl -SL https://github.com/docker/compose/releases/download/v2.26.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
