@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  fastapi:
+    container_name: fastapi
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    command: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80 --reload
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/home/code/app

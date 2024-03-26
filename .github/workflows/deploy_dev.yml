@@ -1,0 +1,30 @@
+name: (DEV) Deploy to EC2
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: copy source via ssh key
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          remote_path: /home/ubuntu/srv/project/
+          remote_host: ${{ secrets.DEV_EC2_HOST }}
+          remote_user: ${{ secrets.DEV_EC2_USER }}
+          remote_key: ${{ secrets.DEV_EC2_KEY }}
+
+      - name: deploy dev server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_EC2_HOST }}
+          username: ${{ secrets.DEV_EC2_USER }}
+          key: ${{ secrets.DEV_EC2_KEY }}
+          script: |
+            sh /home/ubuntu/srv/project/scripts/dev-server/deploy_dev.sh
