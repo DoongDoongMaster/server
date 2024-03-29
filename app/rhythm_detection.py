@@ -2,7 +2,7 @@ import math
 from typing import List
 
 
-BIOS = 64
+BIOS = 16
 
 
 class RhythmDetection:
