@@ -2,6 +2,9 @@ import math
 from typing import List
 
 
+BIOS = 64
+
+
 class RhythmDetection:
     """
     onset을 기반으로 마디 별 박자를 계산하는 클래스
@@ -24,9 +27,12 @@ class RhythmDetection:
         # 전체 wav에 대한 onset
         for onset in onset_full_audio:
             idx = math.floor(onset / sec_of_bar)  # 몇 번째 마디인지
+            pos_on_bar = (onset - sec_of_bar * idx) / sec_of_bar
+            pos_on_bar = int(pos_on_bar * BIOS)
+            pos_on_bar = float(pos_on_bar) / float(BIOS)
             onset_point_in_bar = (
-                idx + (onset - sec_of_bar * idx) / sec_of_bar
-            )  # idx 마디에서 몇 박자 뒤에 등장하는지 (0 ~ 1)
+                idx + pos_on_bar
+            )  # idx 마디에서 몇 박자 뒤에 등장하는지. (0 ~ 1) 마디 누적
             onset_per_bar.append(onset_point_in_bar)
 
         return onset_per_bar
