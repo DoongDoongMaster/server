@@ -31,7 +31,7 @@ class RhythmDetection:
             pos_on_bar = int(pos_on_bar * BIOS)
             pos_on_bar = float(pos_on_bar) / float(BIOS)
             onset_point_in_bar = (
-                idx + pos_on_bar
+                idx + pos_on_bar - 1
             )  # idx 마디에서 몇 박자 뒤에 등장하는지. (0 ~ 1) 마디 누적
             onset_per_bar.append(onset_point_in_bar)
 
