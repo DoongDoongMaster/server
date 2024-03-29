@@ -28,7 +28,7 @@ class RhythmDetection:
         for onset in onset_full_audio:
             idx = math.floor(onset / sec_of_bar)  # 몇 번째 마디인지
             pos_on_bar = (onset - sec_of_bar * idx) / sec_of_bar
-            pos_on_bar = int(pos_on_bar * BIOS)
+            pos_on_bar = int(round(pos_on_bar * float(BIOS)))
             pos_on_bar = float(pos_on_bar) / float(BIOS)
             onset_point_in_bar = (
                 idx + pos_on_bar - 1
