@@ -7,8 +7,8 @@ app = FastAPI()
 
 MODEL_SERVER_URL = "https://2795-203-255-190-41.ngrok-free.app/predict"
 INIT_BOUND = 0.3
-MIN_BOUND = 0.08
-MAX_BOUND = 0.1
+MIN_BOUND = 0.1
+MAX_BOUND = 0.15
 
 
 @app.get("/")
