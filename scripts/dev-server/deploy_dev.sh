@@ -32,5 +32,6 @@ then
   sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 fi
 
+sudo docker stop fastapi
 echo "start docker compose up: ubuntu"
 sudo docker compose -f /home/ubuntu/srv/project/docker-compose.dev.yml up --build -d
