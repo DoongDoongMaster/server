@@ -9,7 +9,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-MODEL_SERVER_URL = "https://2795-203-255-190-41.ngrok-free.app/predict"
+MODEL_SERVER_URL = "https://4557-203-255-190-41.ngrok-free.app/adt/predict"
 INIT_BOUND = 0.3
 MIN_BOUND = 0.1
 MAX_BOUND = 0.15
@@ -52,6 +52,6 @@ def drum_transcription(file: UploadFile = File(...)):
         pitch = drum[1]
         ts = onsets_arr[idx]
         for p in pitch:
-            result.routerend({"pitch": p, "ts": ts})
+            result.append({"pitch": p, "ts": ts})
 
     return {"result": result}
