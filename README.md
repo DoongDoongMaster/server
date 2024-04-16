@@ -1,2 +1,2 @@
 # server
-model serving server
+API server
