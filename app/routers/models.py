@@ -1,3 +1,4 @@
+import os
 import httpx
 
 from fastapi import APIRouter, File, UploadFile, HTTPException
@@ -9,7 +10,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-MODEL_SERVER_URL = "https://4557-203-255-190-41.ngrok-free.app/adt/predict"
 INIT_BOUND = 0.3
 MIN_BOUND = 0.1
 MAX_BOUND = 0.15
@@ -34,7 +34,9 @@ def get_max_bound():
 def drum_transcription(file: UploadFile = File(...)):
     try:
         response = httpx.post(
-            MODEL_SERVER_URL, files={"file": (file.filename, file.file)}, timeout=None
+            os.environ["MODEL_SERVER_URL"],
+            files={"file": (file.filename, file.file)},
+            timeout=None,
         )
     except:
         raise HTTPException(status_code=503, detail="Model server error")
