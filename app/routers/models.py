@@ -1,6 +1,6 @@
 import os
-import httpx
 import logging
+import requests
 
 from fastapi import APIRouter, File, UploadFile, HTTPException
 
@@ -36,10 +36,8 @@ def drum_transcription(file: UploadFile = File(...)):
     logging.info("post request enter")
     try:
         logging.info("I'm waiting respond for model server ...")
-        response = httpx.post(
-            os.environ["MODEL_SERVER_URL"],
-            files={"file": (file.filename, file.file)},
-            timeout=None,
+        response = requests.post(
+            os.environ["MODEL_SERVER_URL"], files={"file": (file.filename, file.file)}
         )
         logging.info("model server done !!!")
     except:
