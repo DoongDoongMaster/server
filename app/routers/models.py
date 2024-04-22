@@ -1,5 +1,6 @@
 import os
 import httpx
+import logging
 
 from fastapi import APIRouter, File, UploadFile, HTTPException
 
@@ -32,12 +33,15 @@ def get_max_bound():
 
 @router.post("/adt/predict")
 def drum_transcription(file: UploadFile = File(...)):
+    logging.info("post request enter")
     try:
+        logging.info("I'm waiting respond for model server ...")
         response = httpx.post(
             os.environ["MODEL_SERVER_URL"],
             files={"file": (file.filename, file.file)},
             timeout=None,
         )
+        logging.info("model server done !!!")
     except:
         raise HTTPException(status_code=503, detail="Model server error")
 
