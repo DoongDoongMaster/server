@@ -1,6 +1,8 @@
 import os
+import io
 import logging
 import requests
+import xml.etree.ElementTree as ET
 
 from fastapi import APIRouter, File, UploadFile, HTTPException
 
@@ -57,3 +59,20 @@ def drum_transcription(file: bytes = File(...)):
             result.append({"pitch": p, "ts": ts})
 
     return {"result": result}
+
+
+@router.post("/omr/predict")
+def drum_transcription(file: bytes = File(...)):
+    dummy_file = "app/static/dummy.xml"
+
+    # XML 데이터를 파싱하여 ElementTree 객체로 변환
+    tree = ET.parse(dummy_file)
+
+    # BytesIO 객체를 사용하여 XML 트리를 바이트 데이터로 변환
+    byte_io = io.BytesIO()
+    tree.write(byte_io, encoding="utf-8", xml_declaration=True)
+
+    # 바이트 데이터를 가져옴
+    byte_data = byte_io.getvalue()
+
+    return {"result": byte_data}
