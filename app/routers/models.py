@@ -4,7 +4,7 @@ import logging
 import requests
 import xml.etree.ElementTree as ET
 
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, HTTPException
 
 
 router = APIRouter(
@@ -38,7 +38,9 @@ def drum_transcription(file: bytes = File(...)):
     logging.info("post request enter")
     try:
         logging.info("I'm waiting respond for model server ...")
-        response = requests.post(os.environ["MODEL_SERVER_URL"], files={"file": (file)})
+        response = requests.post(
+            f'{os.environ["MODEL_SERVER_URL"]}/adt/predict', files={"file": (file)}
+        )
         logging.info("model server done !!!")
     except:
         raise HTTPException(status_code=503, detail="Model server error")
