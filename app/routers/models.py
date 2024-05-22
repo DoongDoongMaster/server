@@ -65,7 +65,8 @@ def drum_transcription(file: bytes = File(...)):
 
 @router.post("/omr/predict")
 def drum_transcription(file: bytes = File(...)):
-    dummy_file = "app/static/dummy.xml"
+    dummy_name = "최종데모"
+    dummy_file = f"app/static/{dummy_name}.xml"
 
     # XML 데이터를 파싱하여 ElementTree 객체로 변환
     tree = ET.parse(dummy_file)
