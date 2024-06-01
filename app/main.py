@@ -5,7 +5,6 @@ from firebase_admin import credentials, auth
 
 from fastapi import FastAPI
 from .routers import models
-from .middleware import auth
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
@@ -16,7 +15,6 @@ firebase_admin.initialize_app(cred)
 
 app = FastAPI()
 
-app.add_middleware(auth.FirebaseTokenValidationMiddleware)
 app.include_router(models.router)
 
 @app.get("/")

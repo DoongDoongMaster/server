@@ -1,26 +1,31 @@
-import firebase_admin
+from fastapi import HTTPException
+from fastapi.security import HTTPBearer
+from starlette.requests import Request
 from firebase_admin import auth
-from fastapi import Request, HTTPException
-from fastapi.responses import JSONResponse
-from starlette.middleware.base import BaseHTTPMiddleware
+import logging
 
-class FirebaseTokenValidationMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if not request.url.path.startswith('/models'):
-            return await call_next(request)
+logger = logging.getLogger('uvicorn.error')
+logger.setLevel(logging.DEBUG)
 
-        token = request.headers.get("Authorization")
+class AuthRequired(HTTPBearer):
+    def __init__(self, auto_error: bool = True):
+        super(AuthRequired, self).__init__(auto_error=auto_error)
 
-        if token:
-            try:
-                token = token.split(" ")[1]  # "Bearer <token>" 형태일 경우
-                decoded_token = auth.verify_id_token(token)
-                request.state.user = decoded_token  # 사용자 정보를 request.state에 저장
-            except Exception as e:
-                return JSONResponse(status_code=403, content="Invalid token")
-        else:
-            return JSONResponse(status_code=403, content="Token required")
+    async def __call__(self, request: Request):
+        auth_header = request.headers.get("Authorization")
 
-        response = await call_next(request)
-        return response
+        if not auth_header:
+            raise HTTPException(status_code=401, detail="Token Required")
 
+        token_type, token = auth_header.split(" ")
+
+        if token_type != "Bearer":
+            raise HTTPException(status_code=402, detail="Invalid Token")
+
+        try:
+            logger.debug(token)
+            decoded_token = auth.verify_id_token(token)
+            request.state.user = decoded_token
+            logger.debug(decoded_token)
+        except Exception as e:
+            raise HTTPException(status_code=403, detail="Invalid Token")

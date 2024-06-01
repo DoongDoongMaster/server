@@ -4,13 +4,18 @@ import logging
 import requests
 import xml.etree.ElementTree as ET
 
-from fastapi import APIRouter, File, HTTPException
-
+from fastapi import APIRouter, File, HTTPException, Depends
+from ..middleware import auth
 
 router = APIRouter(
     prefix="/models",
     tags=["models"],
     responses={404: {"description": "Not found"}},
+    dependencies=[
+        Depends(
+            auth.AuthRequired(),
+        ),
+    ],
 )
 
 INIT_BOUND = 0.3
