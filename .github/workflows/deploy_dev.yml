@@ -30,7 +30,7 @@ jobs:
         run: sudo mkdir -p /home/ubuntu/srv/project/config/
       
       - name: create json
-        id: create json
+        id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
           name: "${{ secrets.DEV_FIREBASE_JSON_NAME }}.json"
