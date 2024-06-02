@@ -33,3 +33,5 @@ archive.zip
 *.pem
 *.env
 *.env.*
+
+**/*firebase-adminsdk*
