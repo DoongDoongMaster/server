@@ -26,16 +26,16 @@ jobs:
             sudo mkdir -p /home/ubuntu/srv/project/
             sudo chown -R ubuntu:ubuntu /home/ubuntu/srv/project/
 
-      - name: create config directory
-        run: sudo mkdir -p /home/ubuntu/srv/project/config/
+      # - name: create config directory
+      #   run: sudo mkdir -p /home/ubuntu/srv/project/config/
       
-      - name: create json
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: "${{ secrets.DEV_FIREBASE_JSON_NAME }}.json"
-          json: ${{ secrets.DEV_FIREBASE_JSON }}
-          dir: './app/config/'
+      # - name: create json
+      #   id: create-json
+      #   uses: jsdaniell/create-json@1.1.2
+      #   with:
+      #     name: "${{ secrets.DEV_FIREBASE_JSON_NAME }}.json"
+      #     json: ${{ secrets.DEV_FIREBASE_JSON }}
+      #     dir: './app/config/'
 
       - name: copy source via ssh key
         uses: burnett01/rsync-deployments@4.1
