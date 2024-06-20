@@ -51,10 +51,13 @@
 
 ## Run
 - 서버 실행 명령어
-  - docker 컨테이너 띄워서 진행
   <br>
   
   ```shell
   docker compose up --build
   ```
-  
+
+- 로컬 호스트에서 docs 확인
+  ```
+  localhost:5000/docs
+  ```
