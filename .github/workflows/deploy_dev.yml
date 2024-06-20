@@ -11,11 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: create env file
-        run: |
-          touch .env
-          echo "${{ secrets.DEV_ENV_VARS }}" >> .env
-
       - name: create remote directory
         uses: appleboy/ssh-action@master
         with:
@@ -38,6 +33,11 @@ jobs:
           remote_host: ${{ secrets.DEV_EC2_HOST }}
           remote_user: ${{ secrets.DEV_EC2_USER }}
           remote_key: ${{ secrets.DEV_EC2_KEY }}
+      
+      - name: create env file
+        run: |
+          touch .env
+          echo "${{ secrets.DEV_ENV_VARS }}" >> .env
 
       - name: deploy dev server
         uses: appleboy/ssh-action@master
