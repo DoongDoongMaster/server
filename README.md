@@ -21,7 +21,7 @@
 ![image](https://github.com/DoongDoongMaster/server/assets/68186101/f81e104c-ae9c-4f4b-860a-29fa6ff0ecd9)
 
 
-<br><br>
+<br>
 
 ## Preparation
 - install docker engine
@@ -47,7 +47,6 @@
   sudo apt-get update
   sudo apt-get install docker-compose-plugin
   ```
-
 <br>
 
 ## Run
