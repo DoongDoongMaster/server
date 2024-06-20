@@ -1,10 +1,8 @@
 import os
-import io
 import logging
 import requests
-import xml.etree.ElementTree as ET
 
-from fastapi import APIRouter, File, HTTPException, Depends
+from fastapi import APIRouter, File, HTTPException, Depends, UploadFile
 from ..middleware import auth
 
 router = APIRouter(
@@ -39,7 +37,7 @@ def get_max_bound():
 
 
 @router.post("/adt/predict")
-def drum_transcription(file: bytes = File(...)):
+def automatic_drum_transcription(file: bytes = File(...)):
     logging.info("post request enter")
     try:
         logging.info("I'm waiting respond for model server ...")
@@ -69,18 +67,30 @@ def drum_transcription(file: bytes = File(...)):
 
 
 @router.post("/omr/predict")
-def drum_transcription(file: bytes = File(...)):
-    dummy_name = "최종데모"
-    dummy_file = f"app/static/{dummy_name}.xml"
+def optical_music_recognition(file: UploadFile = File(...)):
+    try:
+        logging.info("[OMR] Received file upload")
 
-    # XML 데이터를 파싱하여 ElementTree 객체로 변환
-    tree = ET.parse(dummy_file)
+        # 파일 내용을 읽어서 모델 서버로 전송
+        file_content = file.file.read()
 
-    # BytesIO 객체를 사용하여 XML 트리를 바이트 데이터로 변환
-    byte_io = io.BytesIO()
-    tree.write(byte_io, encoding="utf-8", xml_declaration=True)
+        # 파일을 모델 서버로 전송
+        with requests.Session() as session:
+            response = session.post(
+                f'{os.environ["MODEL_SERVER_URL"]}/omr/predict',
+                files={"file": (file.filename, file_content, file.content_type)},
+            )
 
-    # 바이트 데이터를 가져옴
-    byte_data = byte_io.getvalue()
+            # 응답 처리
+            if response.status_code == 200:
+                logging.info("Received response from model server")
+                response_data = response.json()
+                return response_data
+            elif response.status_code == 404:
+                raise HTTPException(status_code=404, detail="Not Found")
+            else:
+                raise HTTPException(status_code=503, detail="Model server error")
 
-    return {"result": byte_data}
+    except Exception as e:
+        logging.error(f"Error processing file: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
