@@ -47,6 +47,11 @@
   sudo apt-get update
   sudo apt-get install docker-compose-plugin
   ```
+- create `.env` file
+  ```shell
+  MODEL_SERVER_URL={Model server 주소}
+  FIREBASE_CREDENTIAL={Firebase setting file 위치}
+  ```
 <br>
 
 ## Run
